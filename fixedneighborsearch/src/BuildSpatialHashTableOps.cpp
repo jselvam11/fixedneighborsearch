@@ -11,6 +11,12 @@
 #include "TorchHelper.h"
 #include "torch/script.h"
 
+#include <torch/extension.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h> // For std::string conversion, if needed
+
+namespace py = pybind11;
+
 #ifdef BUILD_CUDA_MODULE
 template <class T>
 void BuildSpatialHashTableCUDA(const torch::Tensor &points,
@@ -99,4 +105,15 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> BuildSpatialHashTable(
     TORCH_CHECK(false, "BuildSpatialHashTable does not support " +
                            points.toString() + " as input for points")
     return std::tuple<torch::Tensor, torch::Tensor, torch::Tensor>();
+}
+
+PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
+{
+    m.def("BuildSpatialHashTable", &BuildSpatialHashTable,
+          "A function that builds a spatial hash table for points",
+          py::arg("points"),
+          py::arg("radius"),
+          py::arg("points_row_splits"),
+          py::arg("hash_table_size_factor"),
+          py::arg("max_hash_table_size"));
 }

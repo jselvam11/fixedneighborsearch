@@ -14,6 +14,12 @@
 #include "Helper.h"
 #include "torch/script.h"
 
+#include <torch/extension.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h> // For automatic conversion of std::string
+
+namespace py = pybind11;
+
 using namespace open3d::core::nns;
 
 #ifdef BUILD_CUDA_MODULE
@@ -143,4 +149,21 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> FixedRadiusSearch(
     TORCH_CHECK(false, "FixedRadiusSearch does not support " +
                            points.toString() + " as input for points")
     return std::tuple<torch::Tensor, torch::Tensor, torch::Tensor>();
+}
+
+PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
+{
+    m.def("FixedRadiusSearch", &FixedRadiusSearch, "A function that performs fixed radius search",
+          py::arg("points"),
+          py::arg("queries"),
+          py::arg("radius"),
+          py::arg("points_row_splits"),
+          py::arg("queries_row_splits"),
+          py::arg("hash_table_splits"),
+          py::arg("hash_table_index"),
+          py::arg("hash_table_cell_splits"),
+          py::arg("index_dtype"),
+          py::arg("metric_str"),
+          py::arg("ignore_query_point"),
+          py::arg("return_distances"));
 }
