@@ -10,10 +10,10 @@
 
 #include <cub/cub.cuh>
 
-#include "fixedneighborsearch/src/MemoryAllocation.h"
-#include "fixedneighborsearch/src/NeighborSearchCommon.h"
-#include "fixedneighborsearch/src/Helper.h"
-#include "fixedneighborsearch/src/MiniVec.h"
+#include "MemoryAllocation.h"
+#include "NeighborSearchCommon.h"
+#include "Helper.h"
+#include "MiniVec.h"
 
 namespace open3d
 {

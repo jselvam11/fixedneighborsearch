@@ -6,7 +6,7 @@
 // ----------------------------------------------------------------------------
 //
 
-#include "fixedneighborsearch/src/TorchHelper.h"
+#include "TorchHelper.h"
 #include "torch/script.h"
 
 // These classes implement functors that can be passed to the neighbor search

@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: MIT
 // ----------------------------------------------------------------------------
 
-#include "fixedneighborsearch/src/Helper.h"
+#include "Helper.h"
 
 #include <fmt/chrono.h>
 

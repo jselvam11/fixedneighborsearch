@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "fixedneighborsearch/src/TorchHelper.h"
+#include "TorchHelper.h"
 #include "torch/script.h"
 
 #ifdef BUILD_CUDA_MODULE

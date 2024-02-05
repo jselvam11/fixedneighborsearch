@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "fixedneighborsearch/src/Dtype.h"
-#include "fixedneighborsearch/src/Logging.h"
+#include "Dtype.h"
+#include "Logging.h"
 
 /// Call a numerical templated function based on Dtype. Wrap the function to
 /// a lambda function to use DISPATCH_DTYPE_TO_TEMPLATE.

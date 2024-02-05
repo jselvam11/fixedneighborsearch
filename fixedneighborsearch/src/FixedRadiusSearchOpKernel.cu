@@ -7,10 +7,10 @@
 //
 
 #include "ATen/cuda/CUDAContext.h"
-#include "fixedneighborsearch/src/FixedRadiusSearchImpl.cuh"
-#include "fixedneighborsearch/src/NeighborSearchCommon.h"
-#include "fixedneighborsearch/src/TorchHelper.h"
-#include "fixedneighborsearch/src/NeighborSearchAllocator.h"
+#include "FixedRadiusSearchImpl.cuh"
+#include "NeighborSearchCommon.h"
+#include "TorchHelper.h"
+#include "NeighborSearchAllocator.h"
 #include "torch/script.h"
 
 using namespace open3d::core::nns;

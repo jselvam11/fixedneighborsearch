@@ -9,7 +9,7 @@
 
 #include <memory>
 
-#include "fixedneighborsearch/src/MiniVec.h"
+#include "MiniVec.h"
 
 namespace open3d
 {

@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: MIT
 // ----------------------------------------------------------------------------
 
-#include "fixedneighborsearch/src/Dtype.h"
+#include "Dtype.h"
 
 namespace open3d
 {

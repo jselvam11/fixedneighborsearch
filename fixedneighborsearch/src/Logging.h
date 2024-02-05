@@ -24,7 +24,7 @@
 
 #define DEFAULT_IO_BUFFER_SIZE 1024
 
-#include "fixedneighborsearch/src/Macro.h"
+#include "Macro.h"
 
 // Mimic "macro in namespace" by concatenating `utility::` and a macro.
 // Ref: https://stackoverflow.com/a/11791202

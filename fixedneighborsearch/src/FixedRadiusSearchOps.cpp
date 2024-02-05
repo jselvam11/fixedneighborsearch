@@ -8,10 +8,10 @@
 
 #include <vector>
 
-#include "fixedneighborsearch/src/Dtype.h"
-#include "fixedneighborsearch/src/NeighborSearchCommon.h"
-#include "fixedneighborsearch/src/TorchHelper.h"
-#include "fixedneighborsearch/src/Helper.h"
+#include "Dtype.h"
+#include "NeighborSearchCommon.h"
+#include "TorchHelper.h"
+#include "Helper.h"
 #include "torch/script.h"
 
 using namespace open3d::core::nns;

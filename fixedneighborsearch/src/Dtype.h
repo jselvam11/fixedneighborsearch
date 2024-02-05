@@ -10,9 +10,9 @@
 #include <cstring>
 #include <string>
 
-#include "fixedneighborsearch/src/Macro.h"
-#include "fixedneighborsearch/src/Dispatch.h"
-#include "fixedneighborsearch/src/Logging.h"
+#include "Macro.h"
+#include "Dispatch.h"
+#include "Logging.h"
 
 namespace open3d
 {

@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: MIT
 // ----------------------------------------------------------------------------
 
-#include "fixedneighborsearch/src/Logging.h"
+#include "Logging.h"
 
 #include <fmt/core.h>
 #include <fmt/printf.h>
