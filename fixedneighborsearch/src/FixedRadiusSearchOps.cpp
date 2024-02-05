@@ -151,7 +151,7 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> FixedRadiusSearch(
     return std::tuple<torch::Tensor, torch::Tensor, torch::Tensor>();
 }
 
-PYBIND11_MODULE("fixedneighborsearch", m)
+PYBIND11_MODULE(fixed_neighbor_search, m)
 {
     m.def("fixed_radius_search", &FixedRadiusSearch, "A function that performs fixed radius search",
           py::arg("points"),
