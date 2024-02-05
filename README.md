@@ -23,7 +23,7 @@ To install the Fixed Neighbor Search extension, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/fixedneighborsearch.git
+   git clone https://github.com/jselvam11/fixedneighborsearch.git
    cd fixedneighborsearch
 2. Build and install the extension
    ```bash
