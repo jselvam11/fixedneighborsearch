@@ -18,10 +18,6 @@
 #endif
 #endif
 
-#include <fmt/core.h>
-#include <fmt/printf.h>
-#include <fmt/ranges.h>
-
 #define DEFAULT_IO_BUFFER_SIZE 1024
 
 #include "Macro.h"
@@ -146,17 +142,9 @@ namespace open3d
                                                 const char *format,
                                                 Args &&...args)
             {
-                if (sizeof...(Args) > 0)
-                {
-                    Logger::GetInstance().VError(
-                        file, line, function,
-                        FormatArgs(format, fmt::make_format_args(args...)));
-                }
-                else
-                {
-                    Logger::GetInstance().VError(file, line, function,
-                                                 std::string(format));
-                }
+
+                Logger::GetInstance().VError(file, line, function,
+                                             std::string(format));
             }
             template <typename... Args>
             static void LogWarning_(const char *file,
@@ -168,17 +156,8 @@ namespace open3d
                 if (Logger::GetInstance().GetVerbosityLevel() >=
                     VerbosityLevel::Warning)
                 {
-                    if (sizeof...(Args) > 0)
-                    {
-                        Logger::GetInstance().VWarning(
-                            file, line, function,
-                            FormatArgs(format, fmt::make_format_args(args...)));
-                    }
-                    else
-                    {
-                        Logger::GetInstance().VWarning(file, line, function,
-                                                       std::string(format));
-                    }
+                    Logger::GetInstance().VWarning(file, line, function,
+                                                   std::string(format));
                 }
             }
             template <typename... Args>
@@ -190,17 +169,8 @@ namespace open3d
             {
                 if (Logger::GetInstance().GetVerbosityLevel() >= VerbosityLevel::Info)
                 {
-                    if (sizeof...(Args) > 0)
-                    {
-                        Logger::GetInstance().VInfo(
-                            file, line, function,
-                            FormatArgs(format, fmt::make_format_args(args...)));
-                    }
-                    else
-                    {
-                        Logger::GetInstance().VInfo(file, line, function,
-                                                    std::string(format));
-                    }
+                    Logger::GetInstance().VInfo(file, line, function,
+                                                std::string(format));
                 }
             }
             template <typename... Args>
@@ -213,27 +183,13 @@ namespace open3d
                 if (Logger::GetInstance().GetVerbosityLevel() >=
                     VerbosityLevel::Debug)
                 {
-                    if (sizeof...(Args) > 0)
-                    {
-                        Logger::GetInstance().VDebug(
-                            file, line, function,
-                            FormatArgs(format, fmt::make_format_args(args...)));
-                    }
-                    else
-                    {
-                        Logger::GetInstance().VDebug(file, line, function,
-                                                     std::string(format));
-                    }
+                    Logger::GetInstance().VDebug(file, line, function,
+                                                 std::string(format));
                 }
             }
 
         private:
             Logger();
-            static std::string FormatArgs(const char *format, fmt::format_args args)
-            {
-                std::string err_msg = fmt::vformat(format, args);
-                return err_msg;
-            }
             void VError [[noreturn]] (const char *file,
                                       int line,
                                       const char *function,

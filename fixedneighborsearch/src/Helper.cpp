@@ -7,8 +7,6 @@
 
 #include "Helper.h"
 
-#include <fmt/chrono.h>
-
 #include <algorithm>
 #include <cctype>
 #include <sstream>
@@ -147,7 +145,11 @@ namespace open3d
         std::string GetCurrentTimeStamp()
         {
             std::time_t t = std::time(nullptr);
-            return fmt::format("{:%Y-%m-%d-%H-%M-%S}", *std::localtime(&t));
+            std::tm tm = *std::localtime(&t);
+
+            std::stringstream ss;
+            ss << std::put_time(&tm, "%Y-%m-%d-%H-%M-%S");
+            return ss.str();
         }
 
     } // namespace utility

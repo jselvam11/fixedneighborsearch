@@ -7,10 +7,6 @@
 
 #include "Logging.h"
 
-#include <fmt/core.h>
-#include <fmt/printf.h>
-#include <fmt/ranges.h>
-
 #include <functional>
 #include <iostream>
 #include <sstream>
@@ -50,14 +46,7 @@ namespace open3d
                                     int highlight_text) const
             {
                 std::ostringstream msg;
-#ifndef _WIN32
-                msg << fmt::sprintf("%c[%d;%dm", 0x1B, highlight_text,
-                                    (int)text_color + 30);
-#endif
                 msg << text;
-#ifndef _WIN32
-                msg << fmt::sprintf("%c[0;m", 0x1B);
-#endif
                 return msg.str();
             }
         };
@@ -83,8 +72,9 @@ namespace open3d
                                           const char *function,
                                           const std::string &message) const
         {
-            std::string err_msg = fmt::format("[Open3D Error] ({}) {}:{}: {}\n",
-                                              function, file, line, message);
+            std::stringstream ss;
+            ss << "[Open3D Error] (" << function << ") " << file << ":" << line << ": " << message << "\n";
+            std::string err_msg = ss.str();
             err_msg = impl_->ColorString(err_msg, TextColor::Red, 1);
 #ifdef _MSC_VER // Uncaught exception error messages not shown in Windows
             std::cerr << err_msg << std::endl;
@@ -97,7 +87,9 @@ namespace open3d
                               const char *function,
                               const std::string &message) const
         {
-            std::string err_msg = fmt::format("[Open3D WARNING] {}", message);
+            std::stringstream ss;
+            ss << "[Open3D WARNING] " << message;
+            std::string err_msg = ss.str();
             err_msg = impl_->ColorString(err_msg, TextColor::Yellow, 1);
             impl_->print_fcn_(err_msg);
         }
@@ -107,7 +99,9 @@ namespace open3d
                            const char *function,
                            const std::string &message) const
         {
-            std::string err_msg = fmt::format("[Open3D INFO] {}", message);
+            std::stringstream ss;
+            ss << "[Open3D INFO] " << message;
+            std::string err_msg = ss.str();
             impl_->print_fcn_(err_msg);
         }
 
@@ -116,7 +110,9 @@ namespace open3d
                             const char *function,
                             const std::string &message) const
         {
-            std::string err_msg = fmt::format("[Open3D DEBUG] {}", message);
+            std::stringstream ss;
+            ss << "[Open3D DEBUG] " << message;
+            std::string err_msg = ss.str();
             impl_->print_fcn_(err_msg);
         }
 
