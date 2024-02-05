@@ -8,10 +8,10 @@
 
 #include <vector>
 
-#include "Dtype.h"
-#include "NeighborSearchCommon.h"
-#include "TorchHelper.h"
-#include "Helper.h"
+#include "fixedneighborsearch/gpu/Dtype.h"
+#include "fixedneighborsearch/gpu/NeighborSearchCommon.h"
+#include "fixedneighborsearch/gpu/TorchHelper.h"
+#include "fixedneighborsearch/gpu/Helper.h"
 #include "torch/script.h"
 
 using namespace open3d::core::nns;
@@ -142,24 +142,7 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> FixedRadiusSearch(
     }
     return std::make_tuple(neighbors_index, neighbors_row_splits,
                            neighbors_distance);
+    TORCH_CHECK(false, "FixedRadiusSearch does not support " +
+                           points.toString() + " as input for points")
+    return std::tuple<torch::Tensor, torch::Tensor, torch::Tensor>();
 }
-TORCH_CHECK(false, "FixedRadiusSearch does not support " +
-                       points.toString() + " as input for points")
-return std::tuple<torch::Tensor, torch::Tensor, torch::Tensor>();
-}
-
-const char *fixed_radius_fn_format =
-    "open3d::fixed_radius_search(Tensor points, Tensor queries, float "
-    "radius, Tensor points_row_splits, Tensor queries_row_splits, Tensor "
-    "hash_table_splits, Tensor hash_table_index, Tensor "
-    "hash_table_cell_splits, ScalarType index_dtype=%d, str "
-    "metric=\"L2\", "
-    "bool ignore_query_point="
-    "False, bool return_distances=False"
-    ") -> (Tensor neighbors_index, "
-    "Tensor neighbors_row_splits, Tensor neighbors_distance)";
-
-static auto registry = torch::RegisterOperators(
-    open3d::utility::FormatString(fixed_radius_fn_format,
-                                  int(c10::ScalarType::Int)),
-    &FixedRadiusSearch);
