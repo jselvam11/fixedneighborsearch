@@ -7,6 +7,7 @@
 
 #include "Helper.h"
 
+#include <ctime>
 #include <algorithm>
 #include <cctype>
 #include <sstream>
@@ -145,11 +146,11 @@ namespace open3d
         std::string GetCurrentTimeStamp()
         {
             std::time_t t = std::time(nullptr);
-            std::tm tm = *std::localtime(&t);
+            std::tm *tm = std::localtime(&t); // Use pointer to std::tm
 
-            std::stringstream ss;
-            ss << std::put_time(&tm, "%Y-%m-%d-%H-%M-%S");
-            return ss.str();
+            char buffer[80];
+            std::strftime(buffer, sizeof(buffer), "%Y-%m-%d-%H-%M-%S", tm);
+            return std::string(buffer);
         }
 
     } // namespace utility
