@@ -118,7 +118,7 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> FixedRadiusSearch(
         torch::dtype(ToTorchDtype<int64_t>()).device(device, device_idx));
     torch::Tensor neighbors_distance;
 
-#define FN_PARAMETERS                                                  \
+#define FRS_FN_PARAMETERS                                              \
     points, queries, radius, points_row_splits, queries_row_splits,    \
         hash_table_splits, hash_table_index, hash_table_cell_splits,   \
         metric, ignore_query_point, return_distances, neighbors_index, \
@@ -132,11 +132,11 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> FixedRadiusSearch(
         {
             if (index_dtype == torch::kInt32)
             {
-                FixedRadiusSearchCUDA<float, int32_t>(FN_PARAMETERS);
+                FixedRadiusSearchCUDA<float, int32_t>(FRS_FN_PARAMETERS);
             }
             else
             {
-                FixedRadiusSearchCUDA<float, int64_t>(FN_PARAMETERS);
+                FixedRadiusSearchCUDA<float, int64_t>(FRS_FN_PARAMETERS);
             }
             return std::make_tuple(neighbors_index, neighbors_row_splits,
                                    neighbors_distance);
@@ -214,14 +214,14 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> BuildSpatialHashTable(
         out_hash_table_splits.data_ptr<int32_t>()[i] = hash_table_splits[i];
     }
 
-#define FN_PARAMETERS                                                       \
+#define BSHT_FN_PARAMETERS                                                  \
     points, radius, points_row_splits, hash_table_splits, hash_table_index, \
         hash_table_cell_splits
 
 #define CALL(type, fn)                                                   \
     if (CompareTorchDtype<type>(point_type))                             \
     {                                                                    \
-        fn<type>(FN_PARAMETERS);                                         \
+        fn<type>(BSHT_FN_PARAMETERS);                                    \
         return std::make_tuple(hash_table_index, hash_table_cell_splits, \
                                out_hash_table_splits);                   \
     }
