@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------
 
 import torch
-from torch.utils.cpp_extension import load_inline
+from .fixed_neighbor_search import fixed_radius_search, build_spatial_hash_table
 
 
 class FixedRadiusSearch(torch.nn.Module):
@@ -114,7 +114,7 @@ class FixedRadiusSearch(torch.nn.Module):
             queries_row_splits = torch.LongTensor([0, queries.shape[0]])
 
         if hash_table is None:
-            table = ops.build_spatial_hash_table(
+            table = build_spatial_hash_table(
                 max_hash_table_size=self.max_hash_table_size,
                 points=points,
                 radius=radius,
@@ -123,7 +123,7 @@ class FixedRadiusSearch(torch.nn.Module):
         else:
             table = hash_table
 
-        result = ops.fixed_radius_search(
+        result = fixed_radius_search(
             ignore_query_point=self.ignore_query_point,
             return_distances=self.return_distances,
             metric=self.metric,
