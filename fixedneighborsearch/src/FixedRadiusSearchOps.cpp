@@ -8,10 +8,10 @@
 
 #include <vector>
 
-#include "fixedneighborsearch/gpu/Dtype.h"
-#include "fixedneighborsearch/gpu/NeighborSearchCommon.h"
-#include "fixedneighborsearch/gpu/TorchHelper.h"
-#include "fixedneighborsearch/gpu/Helper.h"
+#include "Dtype.h"
+#include "NeighborSearchCommon.h"
+#include "TorchHelper.h"
+#include "Helper.h"
 #include "torch/script.h"
 
 using namespace open3d::core::nns;
@@ -140,8 +140,6 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> FixedRadiusSearch(
                     "FixedRadiusSearch was not compiled with CUDA support")
 #endif
     }
-    return std::make_tuple(neighbors_index, neighbors_row_splits,
-                           neighbors_distance);
     TORCH_CHECK(false, "FixedRadiusSearch does not support " +
                            points.toString() + " as input for points")
     return std::tuple<torch::Tensor, torch::Tensor, torch::Tensor>();
