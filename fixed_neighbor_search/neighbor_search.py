@@ -1,33 +1,18 @@
-# ----------------------------------------------------------------------------
-# -                        Open3D: www.open3d.org                            -
-# ----------------------------------------------------------------------------
-# Copyright (c) 2018-2023 www.open3d.org
-# SPDX-License-Identifier: MIT
-# ----------------------------------------------------------------------------
-
 import torch
-from .fixed_neighbor_search import fixed_radius_search, build_spatial_hash_table
 
+try:
+    from _fixedneighborsearch import fixed_radius_search, build_spatial_hash_table
+except ImportError:
+    def fixed_radius_search(*args, **kwargs):
+        raise NotImplementedError("_fixedneighborsearch CUDA extension not available")
+        
+    def build_spatial_hash_table(*args, **kwargs):
+        raise NotImplementedError("_fixedneighborsearch CUDA extension not available")
 
 class FixedRadiusSearch(torch.nn.Module):
     """Fixed radius search for 3D point clouds.
 
     This layer computes the neighbors for a fixed radius on a point cloud.
-
-    Example:
-      This example shows a neighbor search that returns the indices to the
-      found neighbors and the distances.::
-
-        import torch
-        import open3d.ml.torch as ml3d
-
-        points = torch.randn([20,3])
-        queries = torch.randn([10,3])
-        radius = 0.8
-
-        nsearch = ml3d.layers.FixedRadiusSearch(return_distances=True)
-        ans = nsearch(points, queries, radius)
-        # returns a tuple of neighbors_index, neighbors_row_splits, and neighbors_distance
 
 
     Arguments:
@@ -46,15 +31,12 @@ class FixedRadiusSearch(torch.nn.Module):
                  ignore_query_point=False,
                  return_distances=False,
                  max_hash_table_size=32 * 2**20,
-                 index_dtype=torch.int32,
                  **kwargs):
         super().__init__()
         self.metric = metric
         self.ignore_query_point = ignore_query_point
         self.return_distances = return_distances
         self.max_hash_table_size = max_hash_table_size
-        assert index_dtype in [torch.int32, torch.int64]
-        self.index_dtype = index_dtype
 
     def forward(self,
                 points,
@@ -68,9 +50,9 @@ class FixedRadiusSearch(torch.nn.Module):
 
         Arguments:
 
-          points: The 3D positions of the input points. It can be a RaggedTensor.
+          points: The 3D positions of the input points.
 
-          queries: The 3D positions of the query points. It can be a RaggedTensor.
+          queries: The 3D positions of the query points.
 
           radius: A scalar with the neighborhood radius
 
@@ -107,11 +89,12 @@ class FixedRadiusSearch(torch.nn.Module):
             Note that the distances are squared if metric is L2.
             This is a zero length Tensor if 'return_distances' is False.
         """
+        device = points.device
 
         if points_row_splits is None:
-            points_row_splits = torch.LongTensor([0, points.shape[0]])
+            points_row_splits = torch.Tensor([0, points.shape[0]]).to(dtype=torch.int64, device=device)
         if queries_row_splits is None:
-            queries_row_splits = torch.LongTensor([0, queries.shape[0]])
+            queries_row_splits = torch.Tensor([0, queries.shape[0]]).to(dtype=torch.int64, device=device)
 
         if hash_table is None:
             table = build_spatial_hash_table(
@@ -123,17 +106,30 @@ class FixedRadiusSearch(torch.nn.Module):
         else:
             table = hash_table
 
+        points_row_splits = points_row_splits.to(device)
+        queries_row_splits = queries_row_splits.to(device)
+        hash_table_index, hash_table_cell_splits, hash_table_splits = table
+        hash_table_index = hash_table_index.to(device)
+        hash_table_cell_splits = hash_table_cell_splits.to(device)
+        hash_table_splits = hash_table_splits.to(device)
         result = fixed_radius_search(
-            ignore_query_point=self.ignore_query_point,
-            return_distances=self.return_distances,
-            metric=self.metric,
             points=points,
             queries=queries,
             radius=radius,
             points_row_splits=points_row_splits,
             queries_row_splits=queries_row_splits,
-            hash_table_splits=table.hash_table_splits,
-            hash_table_index=table.hash_table_index,
-            hash_table_cell_splits=table.hash_table_cell_splits,
-            index_dtype=self.index_dtype)
-        return result
+            hash_table_splits=hash_table_splits,
+            hash_table_index=hash_table_index,
+            hash_table_cell_splits=hash_table_cell_splits,
+            index_dtype=hash_table_index.dtype,
+            metric_str=self.metric,
+            ignore_query_point=self.ignore_query_point,
+            return_distances=self.return_distances
+        )
+
+
+        neighbors_index, neighbors_row_splits, neighbors_distance = result
+        if self.return_distances:
+          neighbors_index, neighbors_row_splits, neighbors_distance
+        else:
+          return neighbors_index, neighbors_row_splits

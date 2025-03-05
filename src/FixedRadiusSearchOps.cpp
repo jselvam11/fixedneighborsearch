@@ -241,7 +241,7 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> BuildSpatialHashTable(
     return std::tuple<torch::Tensor, torch::Tensor, torch::Tensor>();
 }
 
-PYBIND11_MODULE(fixed_neighbor_search, m)
+PYBIND11_MODULE(_fixedneighborsearch, m)
 {
     m.def("build_spatial_hash_table", &BuildSpatialHashTable,
           "A function that builds a spatial hash table for points",
