@@ -1,4 +1,4 @@
-# Fixed Neighbor Search Extension for PyTorch
+# Fixed Neighbor Search Extension (Open3D) for PyTorch
 
 This repository contains a PyTorch C++ extension for performing efficient fixed-radius neighbor searches in point cloud data. It leverages CUDA for acceleration, making it suitable for high-performance computing tasks in 3D data processing and analysis.
 
@@ -12,10 +12,10 @@ This repository contains a PyTorch C++ extension for performing efficient fixed-
 
 Before installing the extension, ensure you have the following:
 
-- PyTorch (version >= 1.7.0)
+- PyTorch (version >= 2.1.0)
 - CUDA Toolkit (version compatible with your PyTorch installation)
 - C++ compiler with C++14 support
-- Python (version >= 3.6)
+- Python (version >= 3.10)
 
 ## Installation
 
@@ -27,7 +27,7 @@ To install the Fixed Neighbor Search extension, follow these steps:
    cd fixedneighborsearch
 2. Build and install the extension
    ```bash
-   python setup.py install
+   pip install .
 
 ## Usage
 After installation, you can use the extension in your PyTorch projects as follows:
@@ -37,8 +37,9 @@ import torch
 import fixed_neighbor_search as fns
 
 # Example usage
+n_search = fns.FixedRadiusSearch(return_distances=True)
 points = torch.randn(100, 3, device='cuda')
 queries = torch.randn(50, 3, device='cuda')
 radius = 0.5
 
-neighbors = fns.fixed_radius_search(points, queries, radius)
+neighbors = n_search(points, queries, radius)
