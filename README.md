@@ -42,4 +42,4 @@ points = torch.randn(100, 3, device='cuda')
 queries = torch.randn(50, 3, device='cuda')
 radius = 0.5
 
-neighbors = n_search(points, queries, radius)
+neighbors_index, neighbors_row_splits, neighbors_distance = n_search(points, queries, radius)
