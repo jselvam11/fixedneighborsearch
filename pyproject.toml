@@ -39,8 +39,8 @@ dev = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/jselvam11/fixed-neighbor-search"
-"Bug Tracker" = "https://github.com/jselvam11/fixed-neighbor-search/issues"
+"Homepage" = "https://github.com/jselvam11/fixedneighborsearch"
+"Bug Tracker" = "https://github.com/jselvam11/fixedneighborsearch/issues"
 
 [tool.setuptools]
 package-dir = {"" = "."}
