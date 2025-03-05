@@ -1,0 +1,63 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "torch>=2.1.0",
+    "ninja"  # Optional but recommended for faster builds
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fixed-neighbor-search"
+version = "0.1.0"
+description = "Fixed radius neighbor search implementation for 3D point clouds"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "torch>=2.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov",
+    "black",
+    "isort",
+    "flake8",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jselvam11/fixed-neighbor-search"
+"Bug Tracker" = "https://github.com/jselvam11/fixed-neighbor-search/issues"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+packages = ["fixed_neighbor_search"]
+
+[tool.setuptools.package-data]
+fixed_neighbor_search = ["*.so", "*.dll", "*.dylib"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310", "py311"]
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
