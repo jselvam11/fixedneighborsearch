@@ -13,7 +13,7 @@ This repository contains a PyTorch C++ extension for performing efficient fixed-
 Before installing the extension, ensure you have the following:
 
 - PyTorch (version >= 2.1.0)
-- CUDA Toolkit (version compatible with your PyTorch installation)
+- CUDA Toolkit (version >= 11.8.0) (version compatible with your PyTorch installation)
 - C++ compiler with C++14 support
 - Python (version >= 3.10)
 
