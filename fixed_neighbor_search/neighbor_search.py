@@ -131,4 +131,4 @@ class FixedRadiusSearch(torch.nn.Module):
         if self.return_distances:
           return neighbors_index, neighbors_row_splits, neighbors_distance
 
-        return neighbors_index, neighbors_row_splits
+        return neighbors_index, neighbors_row_splits, torch.empty(0)
